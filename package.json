@@ -7,8 +7,7 @@
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
-    "lint:ts": "tslint 'src/**/*.{ts,tsx,js}'",
-    "backend": "node ./server/dist/server.js"
+    "lint:ts": "tslint 'src/**/*.{ts,tsx,js}'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -60,7 +59,6 @@
     "@types/d3": "^5.7.2",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@types/react-toastify": "^4.1.0",
     "@types/jest": "^24.9.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
