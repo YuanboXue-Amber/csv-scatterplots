@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { isNullOrUndefined } from 'util';
 
+/**
+ * Accept a 2D number array as its property.
+ * This number array is displayed as a scatterplots with x and y axises.
+ *
+ * Hovering on each dot will display its coordinate.
+ *
+ * @export
+ * @class ScatterPlots
+ * @extends {Component<{data: any[]}, {}>}
+ */
 export class ScatterPlots extends Component<{data: any[]}, {}> {
   componentDidMount() {
     this.draw();

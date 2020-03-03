@@ -7,6 +7,18 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 interface CsvUploadState { selectedFile: any; csvData: number[][]; }
 
+/**
+ * Render the upper half of the page.
+ * It provides an input box, where user can upload file by click or drag and drop.
+ * The uploaded file is read as a CSV and turned into a 2D number array.
+ * This array is passed to ScatterPlots class.
+ *
+ * An additional button is provided for user to download a sample CSV to try it out.
+ *
+ * @export
+ * @class CsvUpload
+ * @extends {Component<{}, CsvUploadState>}
+ */
 export class CsvUpload extends Component<{}, CsvUploadState> {
 
   // Check for the various File API support.
