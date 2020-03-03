@@ -2,6 +2,12 @@ This is a one-page React App that accepts uploaded **CSV** file, and displays it
 
 ## App Demo
 
+Download the sample file -> Upload it to see scatterplots -> Try another file -> Try a file that is not CSV and get error.
+
+The same demo can be viewed with better resolution from ./csv-app-demo.mp4
+
+![Demo](/csv-app-demo.gif)
+
 ------------
 
 ## Start this App from Docker
