@@ -84,12 +84,14 @@ export class CsvUpload extends Component<{}, CsvUploadState> {
   // Validate that the uploaded file has correct type
   onChangeHandler(event: any) {
     const file = event.target.files[0];
-    if (file.type === 'text/plain' || file.type === 'application/vnd.ms-excel' || file.type === 'text/csv') {
-      this.setState({
-        selectedFile: file,
-      });
-    } else {
-      toast.error(`${file.type} is not a supported format. Only text/plain is supported`);
+    if (!isNullOrUndefined(file)) {
+      if (file.type === 'text/plain' || file.type === 'application/vnd.ms-excel' || file.type === 'text/csv') {
+        this.setState({
+          selectedFile: file,
+        });
+      } else {
+        toast.error(`${file.type} is not a supported format. Only text/plain is supported`);
+      }
     }
   }
 

@@ -29,7 +29,7 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
     let minOfx = d3.min(csvData, (d) => d[0]);
     if (isNullOrUndefined(minOfx)) { minOfx = 0; }
     const xScale = d3.scaleLinear()
-      .domain([1.2 * minOfx, 1.2 * maxOfx])
+      .domain([minOfx > 0 ? minOfx * 0.8 : minOfx * 1.2, maxOfx > 0 ? maxOfx * 1.2 : maxOfx * 0.8])
       .range([0, xAxisWidth]);
 
     // set scale for y
@@ -38,7 +38,7 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
     let minOfy = d3.min(csvData, (d) => d[1]);
     if (!minOfy) { minOfy = 0; }
     const yScale = d3.scaleLinear()
-      .domain([1.2 * minOfy, 1.2 * maxOfy])
+      .domain([minOfy > 0 ? minOfy * 0.8 : minOfy * 1.2, maxOfy > 0 ? maxOfy * 1.2 : maxOfy * 0.8])
       .range([yAxisWidth, 0]);
 
     const padding = { top: 30, right: 30, bottom: 100, left: 100 };
@@ -101,7 +101,7 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
       })
       .on('mouseout', (d) => {
           tooltip.transition()
-               .style('opacity', 0);
+               .style('opacity', 0).duration(500);
       });
   }
 
