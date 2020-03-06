@@ -17,6 +17,10 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
     this.draw();
   }
 
+  componentDidUpdate() {
+    this.draw();
+  }
+
   // Draw scatterPlots on div with id "scatterPlots", replace if it exists
   draw() {
     const csvData = this.props.data;
@@ -116,7 +120,6 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
   }
 
   render() {
-    this.draw();
     return <div id="scatterPlots"/>;
   }
 }
