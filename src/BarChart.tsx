@@ -39,71 +39,67 @@ export class BarChart extends Component<{}, {}> {
       .select('#BarChart')
       .selectAll('svg')
       .data([1])
-      .enter()
-        .append('svg');
+      .join('svg');
     svg
-      .attr('width', width)
       .attr('height', height)
-      .attr('transform', 'translate(0, 50)')
-      .attr('viewBox', `0 0 ${width} ${height}`);
+      .attr('width', width);
 
-    const margin = {top: 20, left: 30, bottom: 20, right: 30};
-
-    const yscale = d3
-      .scaleLinear()
-      .range([height - margin.bottom, margin.top])
-      .domain([0, (d3.max(data.map(a => a.value)) ?? 0) * 1.2]);
+    const margin = {top: 20, left: 30, bottom: 20, right: 20};
 
     const xscale = d3
       .scaleBand()
-      .range([margin.left, width - margin.right])
       .domain(data.map(a => a.name))
-      .padding(0.3);
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
 
-    const xAxis = (g: any) => g
+    const yscale = d3
+      .scaleLinear()
+      .domain([0, (d3.max(data.map(a => a.value)) ?? 0 ) * 1.2])
+      .range([height - margin.bottom, margin.top]);
+
+    const xAxis = (g: any) => { g
+        .append('g')
       .attr('transform', `translate(0, ${height - margin.bottom})`)
       .call(d3.axisBottom(xscale));
+    };
 
-    const yAxis = (g: any) => g
+    const yAxis = (g: any) => { g
+        .append('g')
       .attr('transform', `translate(${margin.left}, 0)`)
       .call(d3.axisLeft(yscale).tickFormat(d => `${(d.valueOf() * 100).toFixed(0)}%`));
+    };
 
-    svg
-        .append('g')
-      .call(xAxis);
-    svg
-        .append('g')
-      .call(yAxis);
-    svg
+    const ytitle = (g: any) => { g
         .append('text')
-        .attr('font-size', xscale.bandwidth() / 2)
-        .attr('x', 0)
-        .attr('y', xscale.bandwidth() / 2)
-        .text('↑ Frequency');
+      .text('Frequency ^')
+      .attr('font-size', xscale.bandwidth() / 2)
+      .attr('transform', `translate(0, ${xscale.bandwidth() / 2})`);
+    };
 
-    const bars =
-    svg
-        .append('g')
-      .selectAll('g')
-      .data(data)
-      .join('g');
+    svg.call(xAxis);
+    svg.call(yAxis);
+    svg.call(ytitle);
 
-    bars
+    const gbars = svg
+      .append('g')
+    .selectAll('g')
+    .data(data)
+    .join('g');
+
+    gbars
         .append('rect')
       .style('fill', 'steelblue')
-      // .attr('transform', (d) => `translate(${xscale(d.name)}, 0)`)
       .attr('height', d => yscale(0) - yscale(d.value))
       .attr('width', xscale.bandwidth())
       .attr('x', d => xscale(d.name) ?? 0)
       .attr('y', d => yscale(d.value));
 
-    bars
+    gbars
       .append('text')
-      .style('fill', 'black')
       .attr('font-size', xscale.bandwidth() / 2)
+      .text(d => `${(d.value * 100).toFixed(2)}%`)
       .attr('x', d => xscale(d.name) ?? 0)
-      .attr('y', d => yscale(d.value) - 2)
-      .text(d => `${(d.value * 100).toFixed(2)}%`);
+      .attr('y', d => yscale(d.value) - 2);
   }
 
   render() {
