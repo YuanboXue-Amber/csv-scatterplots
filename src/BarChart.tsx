@@ -3,26 +3,12 @@ import * as d3 from 'd3';
 // tslint:disable-next-line: no-var-requires
 const dsv = require('d3-dsv');
 
-/**
- * Accept a 2D number array as its property.
- * This number array is displayed as a scatterplots with x and y axises.
- *
- * Hovering on each dot will display its coordinate.
- *
- * @export
- * @class ScatterPlots
- * @extends {Component<{data: any[]}, {}>}
- */
-export class ScatterPlots extends Component<{data: any[]}, {}> {
+export class BarChart extends Component<{}, {}> {
   componentDidMount() {
     this.draw();
   }
 
-  componentDidUpdate() {
-    this.draw();
-  }
-
-  // Draw scatterPlots on div with id "scatterPlots", replace if it exists
+  // Draw BarChart on div with id "BarChart", replace if it exists
   draw() {
     // const data = [4, 8, 15, 16, 23, 42];
     const csvString =
@@ -37,7 +23,7 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
     const barheight = 50;
     const middleHeight = 5;
     const svg = d3
-      .select('#scatterPlots')
+      .select('#BarChart')
       .selectAll('svg')
       .data([1])
       .enter()
@@ -79,6 +65,6 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
   }
 
   render() {
-    return <div id="scatterPlots"/>;
+    return <div id="BarChart"/>;
   }
 }

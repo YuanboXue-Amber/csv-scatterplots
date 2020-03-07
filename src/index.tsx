@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { CsvUpload } from './CsvUpload';
+import { BarChart } from './BarChart';
 
 ReactDOM.render(
-  <CsvUpload />,
+  <div className="container">
+    <BarChart />
+  </ div>,
   document.getElementById('root'),
 );
