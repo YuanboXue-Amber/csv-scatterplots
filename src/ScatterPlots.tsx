@@ -23,46 +23,53 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
   // Draw scatterPlots on div with id "scatterPlots", replace if it exists
   draw() {
     const data = [4, 8, 15, 16, 23, 42];
-    const svg = d3.select('#scatterPlots').select('svg');
-    const height = 500;
     const width = 800;
+    const height = 500;
+    const barheight = 50;
+    const middleHeight = 5;
+    const svg = d3
+      .select('#scatterPlots')
+      .selectAll('svg')
+      .data([1])
+      .enter()
+        .append('svg');
     svg
-      .attr('transform', 'translate(0, 50)')
-      .attr('height', height).attr('width', width)
-      .attr('font-size', 10)
-      .attr('text-anchor', 'end');
+      .attr('width', width)
+      .attr('height', height)
+      .attr('transform', 'translate(0, 50)');
 
-    const xscale =
-      d3.scaleLinear()
-        .domain([0, d3.max(data) ?? 0])
-        .range([0, width]);
-    const yscale =
-      d3.scaleBand()
-        .domain(d3.range(data.length).map(String))
-        .range([0, Math.min(height, 22 * data.length)]);
+    const xscale = d3
+      .scaleLinear()
+      .range([0, width])
+      .domain([0, d3.max(data) ?? 0]);
+    const yscale = d3
+      .scaleBand()
+      .range([0, (barheight + middleHeight) * data.length])
+      .domain(d3.range(data.length).map(String));
 
-    const bar =
-      svg.selectAll('g')
-         .data(data)
-         .join('g')
-         .attr('transform',
-              (d, i) => `translate(0, ${yscale(i.toString())})`);
+    const bars = svg
+      .selectAll('g')
+      .data(data)
+      .join('g')
+      .attr('transform', (d, i) => `translate(0, ${yscale(i.toString())})`);
 
-    bar.append('rect')
-       .attr('fill', 'steelblue')
-       .attr('width', d => xscale(d)).attr('height', yscale.bandwidth() - 2);
-       // why does it put in the bottom of <g> elm?? maybe because append means last child?
-
-    bar.append('text')
-       .attr('fill', 'white')
-       .text(d => d.toString())
-       .attr('x', d => xscale(d) - 10)
-       .attr('y', yscale.bandwidth() / 2 + 2 );
+    bars
+      .append('rect')
+      .style('fill', 'steelblue')
+      .attr('width', d => xscale(d))
+      .attr('height', barheight);
+    bars
+      .append('text')
+      .style('fill', 'white')
+      .attr('text-anchor', 'end')
+      .attr('alignment-baseline', 'middle')
+      .attr('font-size', barheight / 2)
+      .attr('x', d => xscale(d) - barheight / 2)
+      .attr('y', barheight / 2)
+      .text(d => d);
   }
 
   render() {
-    return <div id="scatterPlots">
-            <svg />
-           </ div>;
+    return <div id="scatterPlots"/>;
   }
 }
