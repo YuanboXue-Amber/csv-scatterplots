@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import { isNullOrUndefined } from 'util';
 
 /**
  * Accept a 2D number array as its property.
@@ -23,103 +22,47 @@ export class ScatterPlots extends Component<{data: any[]}, {}> {
 
   // Draw scatterPlots on div with id "scatterPlots", replace if it exists
   draw() {
-    const csvData = this.props.data;
-
-    const width = 600; // svg width
-    const height = 500; // svg height
-    d3.select('svg').remove();
-    const svg = d3
-      .select('#scatterPlots') // pick div with id scatterPlots
-      .append('svg')
-      .attr('width', width).attr('height', height)
-      .attr('align', 'center');
-
-    const xAxisWidth = 300;
-    const yAxisWidth = 300;
-
-    // set scale for x
-    let maxOfx = d3.max(csvData, (d) => d[0]);
-    if (isNullOrUndefined(maxOfx)) { maxOfx = 0; }
-    let minOfx = d3.min(csvData, (d) => d[0]);
-    if (isNullOrUndefined(minOfx)) { minOfx = 0; }
-    const xScale = d3.scaleLinear()
-      .domain([minOfx > 0 ? minOfx * 0.8 : minOfx * 1.2, maxOfx > 0 ? maxOfx * 1.2 : maxOfx * 0.8])
-      .range([0, xAxisWidth]);
-
-    // set scale for y
-    let maxOfy = d3.max(csvData, (d) => d[1]);
-    if (!maxOfy) { maxOfy = 0; }
-    let minOfy = d3.min(csvData, (d) => d[1]);
-    if (!minOfy) { minOfy = 0; }
-    const yScale = d3.scaleLinear()
-      .domain([minOfy > 0 ? minOfy * 0.8 : minOfy * 1.2, maxOfy > 0 ? maxOfy * 1.2 : maxOfy * 0.8])
-      .range([yAxisWidth, 0]);
-
-    const padding = { top: 30, right: 30, bottom: 100, left: 100 };
-
-    // draw x and y axis on svg
-    const xAxis = d3.axisBottom(xScale);
+    const data = [4, 8, 15, 16, 23, 42];
+    const svg = d3.select('#scatterPlots').select('svg');
+    const height = 500;
+    const width = 800;
     svg
-      .append('g')
-      .attr('class', 'axis')
-      .attr(
-        'transform',
-        `translate(${padding.left}, ${(height - padding.bottom)})`,
-      )
-      .call(xAxis);
-    const yAxis = d3.axisLeft(yScale);
-    svg
-      .append('g')
-      .attr('class', 'axis')
-      .attr(
-        'transform',
-        `translate(${padding.left}, ${(height - padding.bottom - yAxisWidth)})`,
-      )
-      .call(yAxis);
+      .attr('transform', 'translate(0, 50)')
+      .attr('height', height).attr('width', width)
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end');
 
-    // add the tooltip for mouseover dots
-    const tooltip = d3.select('#scatterPlots').append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
-    // get offset of the svg element, to be used to calculate mouseover position
-    let svgOffsetLeft = 0;
-    let svgOffsetTop = 0;
-    const svgElement = document.getElementById('scatterPlots');
-    if (!isNullOrUndefined(svgElement)) {
-      svgOffsetLeft = svgElement.offsetLeft;
-      svgOffsetTop = svgElement.offsetTop;
-    }
+    const xscale =
+      d3.scaleLinear()
+        .domain([0, d3.max(data) ?? 0])
+        .range([0, width]);
+    const yscale =
+      d3.scaleBand()
+        .domain(d3.range(data.length).map(String))
+        .range([0, Math.min(height, 22 * data.length)]);
 
-    // draw dots on svg
-    yScale.range([0, yAxisWidth]);
-    // eslint-disable-next-line
-    const circle = svg
-      .selectAll('circle')
-      .data(csvData)
-      .enter()
-      .append('circle')
-      .attr('fill', 'goldEnrod') // color
-      .attr('cx', (d) => {
-        return padding.left + xScale(d[0]);
-      })
-      .attr('cy', (d) => {
-        return height - padding.bottom - yScale(d[1]);
-      })
-      .attr('r', 5) // radius
-      .on('mouseover', function (d) {
-          tooltip.transition()
-               .style('opacity', .9);
-          tooltip.text(`(${d[0]}, ${d[1]})`)
-               .style('left', (parseInt(d3.select(this).attr('cx'), 10) + svgOffsetLeft) + 'px')
-               .style('top', (parseInt(d3.select(this).attr('cy'), 10) + svgOffsetTop) + 'px');
-      })
-      .on('mouseout', (d) => {
-          tooltip.transition()
-               .style('opacity', 0).duration(500);
-      });
+    const bar =
+      svg.selectAll('g')
+         .data(data)
+         .join('g')
+         .attr('transform',
+              (d, i) => `translate(0, ${yscale(i.toString())})`);
+
+    bar.append('rect')
+       .attr('fill', 'steelblue')
+       .attr('width', d => xscale(d)).attr('height', yscale.bandwidth() - 2);
+       // why does it put in the bottom of <g> elm?? maybe because append means last child?
+
+    bar.append('text')
+       .attr('fill', 'white')
+       .text(d => d.toString())
+       .attr('x', d => xscale(d) - 10)
+       .attr('y', yscale.bandwidth() / 2 + 2 );
   }
 
   render() {
-    return <div id="scatterPlots"/>;
+    return <div id="scatterPlots">
+            <svg />
+           </ div>;
   }
 }
