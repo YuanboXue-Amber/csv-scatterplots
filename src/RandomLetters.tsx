@@ -53,6 +53,11 @@ export class RandomLetters extends Component<{}, {time: number}> {
       .transition()
       .duration(750);
 
+    // https://bost.ocks.org/mike/transition/
+    // Some Things Cannot Be Interpolated
+    // In order to schedule a transition, the element must exist.
+    // Selection methods related to data joins (data, enter, exit) and
+    // creating elements (append, insert) can therefore only be performed on selections.
     svg
       .selectAll('text')
       .data(data, d => (d as string))
@@ -75,10 +80,11 @@ export class RandomLetters extends Component<{}, {time: number}> {
             .attr('x', (d, i) => i * fontsize)),
         exit => exit
           .style('fill', 'brown')
-          .call(remove => remove
-            .transition(t)
-            .attr('y', '150%')
-            .remove()),
+          .transition(t)
+          .attr('y', '150%')
+          .remove(),
+        // For convenience, there are a few exceptions to this rule.
+        // You can transition.remove to remove an element at the end of the transition...
       );
   }
 
