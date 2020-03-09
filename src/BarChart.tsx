@@ -39,10 +39,9 @@ export class BarChart extends Component<{}, {}> {
       .select('#BarChart')
       .selectAll('svg')
       .data([1])
-      .join('svg');
-    svg
-      .attr('height', height)
-      .attr('width', width);
+      .join('svg')
+        .attr('height', height)
+        .attr('width', width);
 
     const margin = {top: 20, left: 30, bottom: 20, right: 20};
 
@@ -58,22 +57,22 @@ export class BarChart extends Component<{}, {}> {
       .range([height - margin.bottom, margin.top]);
 
     const xAxis = (g: any) => { g
-        .append('g')
-      .attr('transform', `translate(0, ${height - margin.bottom})`)
-      .call(d3.axisBottom(xscale));
+      .append('g')
+        .attr('transform', `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xscale));
     };
 
     const yAxis = (g: any) => { g
-        .append('g')
-      .attr('transform', `translate(${margin.left}, 0)`)
-      .call(d3.axisLeft(yscale).tickFormat(d => `${(d.valueOf() * 100).toFixed(0)}%`));
+      .append('g')
+        .attr('transform', `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yscale).tickFormat(d => `${(d.valueOf() * 100).toFixed(0)}%`));
     };
 
     const ytitle = (g: any) => { g
-        .append('text')
-      .text('Frequency ^')
-      .attr('font-size', xscale.bandwidth() / 2)
-      .attr('transform', `translate(0, ${xscale.bandwidth() / 2})`);
+      .append('text')
+        .text('Frequency ^')
+        .attr('font-size', xscale.bandwidth() / 2)
+        .attr('transform', `translate(0, ${xscale.bandwidth() / 2})`);
     };
 
     svg.call(xAxis);
@@ -82,24 +81,24 @@ export class BarChart extends Component<{}, {}> {
 
     const gbars = svg
       .append('g')
-    .selectAll('g')
-    .data(data)
-    .join('g');
+        .selectAll('g')
+        .data(data)
+        .join('g');
 
     gbars
-        .append('rect')
-      .style('fill', 'steelblue')
-      .attr('height', d => yscale(0) - yscale(d.value))
-      .attr('width', xscale.bandwidth())
-      .attr('x', d => xscale(d.name) ?? 0)
-      .attr('y', d => yscale(d.value));
+      .append('rect')
+        .style('fill', 'steelblue')
+        .attr('height', d => yscale(0) - yscale(d.value))
+        .attr('width', xscale.bandwidth())
+        .attr('x', d => xscale(d.name) ?? 0)
+        .attr('y', d => yscale(d.value));
 
     gbars
       .append('text')
-      .attr('font-size', xscale.bandwidth() / 2)
-      .text(d => `${(d.value * 100).toFixed(2)}%`)
-      .attr('x', d => xscale(d.name) ?? 0)
-      .attr('y', d => yscale(d.value) - 2);
+        .attr('font-size', xscale.bandwidth() / 2)
+        .text(d => `${(d.value * 100).toFixed(2)}%`)
+        .attr('x', d => xscale(d.name) ?? 0)
+        .attr('y', d => yscale(d.value) - 2);
   }
 
   render() {

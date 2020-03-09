@@ -90,3 +90,11 @@ For example, the following selection is flat, with the parent node still the doc
 var td = d3.selectAll("tbody tr").select("td");
 ```
 The only way to obtain a nested selection, then, is to call selectAll on an existing selection; this is why a data-join typically follows a selectAll rather than select.
+
+---------------------------------
+
+## svg
+[[ref]](https://vizhub.com/curran/366c38ba5ebc4631b4bd936f3b709744)
+
+Difference between `line` and `path`
+- when `path` connect, the connecting point is customizable by `stroke-linejoin`.

@@ -40,14 +40,13 @@ export class RandomLetters extends Component<{}, {time: number}> {
       .select('#RandomLetters')
       .selectAll('svg')
       .data([1])
-      .join('svg');
-    svg
-      .attr('height', height)
-      .attr('width', width)
-      .attr('viewbox', `0 0 ${width} ${height}`)
-      .attr('transform', 'translate(0, 50)')
-      .attr('font-size', fontsize)
-      .attr('font-family', 'monospace');
+      .join('svg')
+        .attr('height', height)
+        .attr('width', width)
+        .attr('viewbox', `0 0 ${width} ${height}`)
+        .attr('transform', 'translate(0, 50)')
+        .attr('font-size', fontsize)
+        .attr('font-family', 'monospace');
 
     const t = svg
       .transition()
@@ -63,15 +62,15 @@ export class RandomLetters extends Component<{}, {time: number}> {
       .data(data, d => (d as string))
       .join(
         enter => enter
-            .append('text')
-          .style('fill', 'green')
-          .text(d => d)
-          .attr('x', (d, i) => i * fontsize)
-          .attr('y', '10%')
-          // tslint:disable: no-shadowed-variable
-          .call(enter => enter
-            .transition(t)
-            .attr('y', '80%')),
+          .append('text')
+            .style('fill', 'green')
+            .text(d => d)
+            .attr('x', (d, i) => i * fontsize)
+            .attr('y', '10%')
+            // tslint:disable: no-shadowed-variable
+            .call(enter => enter
+              .transition(t)
+              .attr('y', '80%')),
         update => update
           .style('fill', 'grey')
           .attr('y', '80%')
