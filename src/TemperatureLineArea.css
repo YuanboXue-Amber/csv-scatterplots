@@ -7,6 +7,10 @@
   stroke: #C0C0BB;
 }
 
+.domain {
+  stroke: #635F5D;
+}
+
 text {
   font-family: sans-serif;
   fill: #635F5D;
@@ -29,4 +33,8 @@ text {
   fill: none;
   stroke: maroon;
   stroke-width: 2;
+}
+.temp-area path {
+  fill: #f59089;
+  opacity: 0.5;
 }

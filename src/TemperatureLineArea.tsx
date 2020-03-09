@@ -53,13 +53,11 @@ export class TemperatureLineArea extends Component<{}, {}> {
     const xscale = d3
       .scaleTime()
       .domain([d3.min(data, xvar) ?? 0, d3.max(data, xvar) ?? 0])
-      .range([0, innerwidth])
-      .nice();
+      .range([0, innerwidth]);
     const yscale = d3
       .scaleLinear()
       .domain([d3.min(data, yvar) ?? 0, d3.max(data, yvar) ?? 0])
-      .range([innerheight, 0])
-      .nice();
+      .range([innerheight, 0]);
 
     const xAxis = (g: any) => {
       const xAxisG = g.append('g');
@@ -69,9 +67,7 @@ export class TemperatureLineArea extends Component<{}, {}> {
                 .tickSizeInner(0 - innerheight)
                 .tickPadding(10)
                 .ticks(d3.timeHour.every(12)));
-      xAxisG
-        .select('.domain')
-        .remove();
+
     };
     const yAxis = (g: any) => {
       const yAxisG = g.append('g');
@@ -80,9 +76,6 @@ export class TemperatureLineArea extends Component<{}, {}> {
         .call(d3.axisLeft(yscale)
                 .tickSizeInner(0 - innerwidth)
                 .tickPadding(5));
-      yAxisG
-        .select('.domain')
-        .remove();
     };
 
     const xTitle = (g: any) => {
@@ -151,13 +144,25 @@ export class TemperatureLineArea extends Component<{}, {}> {
 
     const lineGenerator = d3.line<ITempr>()
       .x((d) => xscale(xvar(d)) + margin.left)
-      .y((d) => yscale(yvar(d)) + margin.top);
+      .y((d) => yscale(yvar(d)) + margin.top)
+      .curve(d3.curveBasis);
+
+    const areaGenerator = d3.area<ITempr>()
+      .x((d) => xscale(xvar(d)) + margin.left)
+      .y0(innerheight + margin.top)
+      .y1((d) => yscale(yvar(d)) + margin.top);
 
     svg
       .append('g')
         .attr('class', 'temp-line')
         .append('path')
           .attr('d', lineGenerator(data) ?? '');
+
+    svg
+      .append('g')
+        .attr('class', 'temp-area')
+        .append('path')
+          .attr('d', areaGenerator(data) ?? '');
   }
 
   render() {
