@@ -98,3 +98,18 @@ The only way to obtain a nested selection, then, is to call selectAll on an exis
 
 Difference between `line` and `path`
 - when `path` connect, the connecting point is customizable by `stroke-linejoin`.
+---------------------------------
+
+## d3
+
+- Bar chart [[ref]](https://vizhub.com/curran/dd44f8fcdc8346ff90bddd63572bf638)
+
+  1. When *domain* is mapped to *range* for `scaleBand`, it is using the left/top most edge of the band. [[ref]](https://vizhub.com/curran/9247d4d42df74185980f7b1f7504dcc5)
+![band scale](https://raw.githubusercontent.com/d3/d3-scale/master/img/band.png)
+
+  2. It's good to use `key => Object.key`, value accessors, so we can change the chart to show different columns easier.
+
+- Axis [[ref]](https://vizhub.com/curran/a44b38541b6e47a4afdd2dfe67a302c5)
+
+  1. [Format number example](http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e)
+  2. [The Sunlight Foundation’s Data Visualization Style Guidelines](https://github.com/amycesal/dataviz-style-guide/blob/master/Sunlight-StyleGuide-DataViz.pdf)
