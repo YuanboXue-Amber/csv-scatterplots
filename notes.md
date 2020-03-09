@@ -113,3 +113,6 @@ Difference between `line` and `path`
 
   1. [Format number example](http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e)
   2. [The Sunlight Foundation’s Data Visualization Style Guidelines](https://github.com/amycesal/dataviz-style-guide/blob/master/Sunlight-StyleGuide-DataViz.pdf)
+
+- Line and Area [[ref]](https://vizhub.com/curran/012b5b20ce894b0fa7dc98ef3a0b43a5)
+  - Groups written in the later part of js/ts will be displayed on top layer.

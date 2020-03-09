@@ -126,20 +126,20 @@ export class CarScatterplots extends Component<{}, {}> {
     svg.call(yTitle);
     svg.call(chartTitle);
 
+    const dots = svg
+      .append('g')
+        .attr('class', 'dots')
+        .selectAll('circle')
+        .data(data)
+        .join('circle')
+        .attr('r', radius)
+        .attr('cx', d => xscale(xvar(d)) + margin.left)
+        .attr('cy', d => yscale(yvar(d)) + margin.top);
     const tooltip = svg.append('g')
       .attr('class', 'mytooltip')
       .append('text')
       .style('opacity', 0);
-
-    const dots = svg.append('g')
-      .attr('class', 'dots');
     dots
-      .selectAll('circle')
-      .data(data)
-      .join('circle')
-      .attr('r', radius)
-      .attr('cx', d => xscale(xvar(d)) + margin.left)
-      .attr('cy', d => yscale(yvar(d)) + margin.top)
       .on('mouseover', function (d) {
         tooltip
           .transition()
