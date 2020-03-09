@@ -1,0 +1,32 @@
+.dots circle {
+  opacity: 0.5;
+  fill: #f2669e;
+}
+
+.tick line {
+  stroke: #C0C0BB;
+}
+
+text {
+  font-family: sans-serif;
+  fill: #635F5D;
+}
+
+.tick text {
+  font-size: 1.5em;
+}
+
+.axisTitle text {
+  font-size: 2em;
+}
+
+.chart-title text {
+  font-size: 3em;
+  fill: black;
+}
+
+.temp-line path {
+  fill: none;
+  stroke: maroon;
+  stroke-width: 2;
+}
