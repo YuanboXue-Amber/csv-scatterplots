@@ -1,0 +1,10 @@
+.bowl rect {
+  fill: beige;
+  stroke: black;
+}
+
+.fruit text {
+  font-family: sans-serif;
+  font-size: 2em;
+  fill: darkgreen;
+}
