@@ -10,7 +10,7 @@ export class FruitBowl extends Component<{}, {time: number}> {
   interval: NodeJS.Timeout | undefined;
 
   componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000); // re-render every 5s
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 7000); // re-render every 5s
     this.draw();
   }
 
@@ -66,40 +66,40 @@ export class FruitBowl extends Component<{}, {time: number}> {
           .duration(500);
     };
 
-    const setNested = (selectionCircle: any, selectionText: any) => {
-      selectionCircle
-        .transition().call(transitionConfigure)
-        .attr('fill', (d: IFruit) => colorScale(d.type) as string)
-        .attr('r', (d: IFruit) => sizeScale(d.type) as string);
-      selectionText
-        .transition().call(transitionConfigure)
-        .text((d: IFruit) => d.type)
-        .attr('text-anchor', 'middle');
-    };
-
-    const setPos = (group: any) => {
-      group
-        .transition().call(transitionConfigure)
-        .attr('transform', (d: IFruit, i: number) => `translate(${120 + i * 120}, ${innerheight / 4 + 30})`);
-    };
-
     const renderFruits = (data: IFruit[]) => {
       const group = svg
         .selectAll('.fruit')
         .data(data, d => String((d as IFruit).id));
-      setPos(group);
-      setNested(group.selectAll('circle'), group.selectAll('text'));
+      group
+        .transition().call(transitionConfigure)
+        .attr('transform', (d: IFruit, i: number) => `translate(${120 + i * 120}, ${innerheight / 4 + 30})`);
+      group.selectAll('circle')
+        .transition().call(transitionConfigure)
+        .attr('fill', d => colorScale((d as IFruit).type) as string)
+        .attr('r',  d => sizeScale((d as IFruit).type) as string);
+      group.selectAll('text')
+        .transition().call(transitionConfigure)
+        .text(d => (d as IFruit).type);
 
       const groupEnter = group
         .enter()
-        .append('g').attr('class', 'fruit');
-      setPos(groupEnter);
-      setNested(groupEnter.append('circle'), groupEnter.append('text'));
-
-      group
-        .exit()
+        .append('g').attr('class', 'fruit')
+        .attr('transform', (d: IFruit, i: number) => `translate(${120 + i * 120}, ${innerheight / 4 + 30})`);
+      groupEnter.append('circle')
         .transition().call(transitionConfigure)
-        .remove();
+        .attr('fill', d => colorScale((d as IFruit).type) as string)
+        .attr('r',  d => sizeScale((d as IFruit).type) as string);
+      groupEnter.append('text')
+        .attr('text-anchor', 'middle')
+        .transition().call(transitionConfigure)
+        .text(d => (d as IFruit).type);
+
+      const groupExit = group
+        .exit();
+      groupExit.selectAll('circle')
+        .transition().call(transitionConfigure)
+        .attr('r',  0);
+      groupExit.remove();
     };
 
     // original data for fruit
