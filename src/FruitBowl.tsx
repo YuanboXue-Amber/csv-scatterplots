@@ -66,6 +66,17 @@ export class FruitBowl extends Component<{}, {time: number}> {
           .duration(500);
     };
 
+    const transit2NewAttr = (circleSelection: any, textSelection: any) => {
+      circleSelection
+        .transition().call(transitionConfigure)
+        .attr('fill', (d: IFruit) => colorScale(d.type))
+        .attr('r',  (d: IFruit) => sizeScale(d.type));
+      textSelection
+        .attr('text-anchor', 'middle')
+        .transition().call(transitionConfigure)
+        .text((d: IFruit) => d.type);
+    };
+
     const renderFruits = (data: IFruit[]) => {
       const group = svg
         .selectAll('.fruit')
@@ -73,26 +84,13 @@ export class FruitBowl extends Component<{}, {time: number}> {
       group
         .transition().call(transitionConfigure)
         .attr('transform', (d: IFruit, i: number) => `translate(${120 + i * 120}, ${innerheight / 4 + 30})`);
-      group.selectAll('circle')
-        .transition().call(transitionConfigure)
-        .attr('fill', d => colorScale((d as IFruit).type) as string)
-        .attr('r',  d => sizeScale((d as IFruit).type) as string);
-      group.selectAll('text')
-        .transition().call(transitionConfigure)
-        .text(d => (d as IFruit).type);
+      transit2NewAttr(group.selectAll('circle'), group.selectAll('text'));
 
       const groupEnter = group
         .enter()
         .append('g').attr('class', 'fruit')
         .attr('transform', (d: IFruit, i: number) => `translate(${120 + i * 120}, ${innerheight / 4 + 30})`);
-      groupEnter.append('circle')
-        .transition().call(transitionConfigure)
-        .attr('fill', d => colorScale((d as IFruit).type) as string)
-        .attr('r',  d => sizeScale((d as IFruit).type) as string);
-      groupEnter.append('text')
-        .attr('text-anchor', 'middle')
-        .transition().call(transitionConfigure)
-        .text(d => (d as IFruit).type);
+      transit2NewAttr(groupEnter.append('circle'), groupEnter.append('text'));
 
       const groupExit = group
         .exit();
