@@ -5,7 +5,8 @@ import './index.css';
 // import { RandomLetters } from './RandomLetters';
 // import { CarScatterplots } from './CarScatterplots';
 // import { TemperatureLineArea } from './TemperatureLineArea';
-import { FruitBowl } from './FruitBowl';
+// import { FruitBowl } from './FruitBowl';
+import { WorldMap } from './WorldMap';
 
 ReactDOM.render(
   <div className="container">
@@ -21,8 +22,11 @@ ReactDOM.render(
     {/* <div className="container">
       <TemperatureLineArea />
     </ div> */}
-    <div className="container">
+    {/* <div className="container">
       <FruitBowl />
+    </ div> */}
+    <div className="container">
+      <WorldMap />
     </ div>
   </ div>,
   document.getElementById('root'),

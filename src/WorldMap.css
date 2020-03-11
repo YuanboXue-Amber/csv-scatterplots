@@ -1,0 +1,14 @@
+#WorldMap {
+  padding-top: 3em;
+}
+
+.sphere {
+  fill: #3bb9b9bd;
+}
+
+.country {
+  fill: #b5f16b;
+  stroke: black;
+  stroke-opacity: 0.2;
+}
+
