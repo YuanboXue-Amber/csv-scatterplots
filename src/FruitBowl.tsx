@@ -10,7 +10,7 @@ export class FruitBowl extends Component<{}, {time: number}> {
   interval: NodeJS.Timeout | undefined;
 
   componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() }), 7000); // re-render every 5s
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 12000); // re-render every 12s
     this.draw();
   }
 
@@ -66,15 +66,33 @@ export class FruitBowl extends Component<{}, {time: number}> {
           .duration(500);
     };
 
-    const transit2NewAttr = (circleSelection: any, textSelection: any) => {
+    const transit2NewAttr = (circleSelection: any, textSelection?: any) => {
       circleSelection
         .transition().call(transitionConfigure)
         .attr('fill', (d: IFruit) => colorScale(d.type))
         .attr('r',  (d: IFruit) => sizeScale(d.type));
-      textSelection
-        .attr('text-anchor', 'middle')
-        .transition().call(transitionConfigure)
-        .text((d: IFruit) => d.type);
+
+      if (textSelection !== null) {
+        textSelection
+          .attr('text-anchor', 'middle')
+          .transition().call(transitionConfigure)
+          .text((d: IFruit) => d.type);
+      }
+
+      circleSelection
+        .on('click', (d: IFruit) => {
+          const parent = d3.select(d3.select(d3.event.target).node().parentNode);
+          const group = parent
+            .selectAll('text')
+            .data(parent.data());
+          // if there's no text, click to show text
+          group.enter().append('text')
+              .attr('text-anchor', 'middle')
+              .transition().call(transitionConfigure)
+              .text(d.type);
+          // if there's text, click to remove text
+          group.remove();
+        });
     };
 
     const renderFruits = (data: IFruit[]) => {
@@ -90,7 +108,7 @@ export class FruitBowl extends Component<{}, {time: number}> {
         .enter()
         .append('g').attr('class', 'fruit')
         .attr('transform', (d: IFruit, i: number) => `translate(${120 + i * 120}, ${innerheight / 4 + 30})`);
-      transit2NewAttr(groupEnter.append('circle'), groupEnter.append('text'));
+      transit2NewAttr(groupEnter.append('circle'), null);
 
       const groupExit = group
         .exit();
@@ -111,16 +129,16 @@ export class FruitBowl extends Component<{}, {time: number}> {
     setTimeout(() => {
       fruitsData.pop();
       renderFruits(fruitsData);
-    }, 1000);
+    }, 3000);
 
     setTimeout(() => {
       fruitsData[2].type = 'lemon';
       renderFruits(fruitsData);
-    }, 2000);
+    }, 6000);
 
     setTimeout(() => {
       renderFruits(fruitsData.filter((d, i) => i !== 1));
-    }, 3000);
+    }, 9000);
   }
 
   render() {
