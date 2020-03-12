@@ -1,0 +1,18 @@
+#WorldTree {
+  padding-top: 3em;
+}
+
+path {
+  fill: none;
+  stroke: #83c5e8;
+}
+
+text {
+  text-shadow:
+   -1px -1px 3px white,
+   -1px  1px 3px white,
+    1px -1px 3px white,
+    1px  1px 3px white;
+  font-family: 'Waiting for the Sunrise', cursive;
+  pointer-events: none; /* no cursor when hover over text */
+}

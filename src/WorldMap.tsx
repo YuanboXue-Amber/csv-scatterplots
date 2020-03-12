@@ -46,7 +46,7 @@ export class WorldMap extends Component<{}, {}> {
       .on('zoom', () => {
         mapG.attr('transform', d3.event.transform);
       });
-    mapG.call(zoom as any);
+    svg.call(zoom as any); // somehow, when it is mapG.call, panning by drag became really hard
 
     // Add outline for map
     mapG
