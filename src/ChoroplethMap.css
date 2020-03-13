@@ -15,3 +15,7 @@
 .country:hover {
   fill: #e4747e;
 }
+
+.hilighted {
+  stroke-width: 0.5px;
+}

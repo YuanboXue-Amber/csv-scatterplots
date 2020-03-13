@@ -77,6 +77,14 @@ export class ChoroplethMap extends Component<{}, {}> {
         .attr('class', 'sphere')
         .attr('d', d => pathGenerator({type: 'Sphere'}));
 
+    // zoom
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .on('zoom', () => {
+        mapG.attr('transform', d3.event.transform);
+      });
+    svg.call(zoom as any); // somehow, when it is mapG.call, panning by drag became really hard
+
     // draw color legend
     const colorLegendG = svg
       .selectAll('.colorLegend')
@@ -109,7 +117,8 @@ export class ChoroplethMap extends Component<{}, {}> {
             (!clickedDomain || d.spec === clickedDomain)
             ? 1
             : 0.2,
-          );
+          )
+          .classed('hilighted', d => d.spec === clickedDomain);
 
       countries
         .selectAll('title')
