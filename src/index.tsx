@@ -7,7 +7,8 @@ import './index.css';
 // import { TemperatureLineArea } from './TemperatureLineArea';
 // import { FruitBowl } from './FruitBowl';
 // import { WorldMap } from './WorldMap';
-import { WorldTree } from './WorldTree';
+// import { WorldTree } from './WorldTree';
+import { ChoroplethMap } from './ChoroplethMap';
 
 ReactDOM.render(
   <div className="container">
@@ -29,8 +30,11 @@ ReactDOM.render(
     {/* <div className="container">
       <WorldMap />
     </ div> */}
-    <div className="container">
+    {/* <div className="container">
       <WorldTree />
+    </ div> */}
+    <div className="container">
+      <ChoroplethMap />
     </ div>
   </ div>,
   document.getElementById('root'),

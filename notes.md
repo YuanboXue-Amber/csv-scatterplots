@@ -117,3 +117,12 @@ Difference between `line` and `path`
 
 - Line and Area [[ref]](https://vizhub.com/curran/012b5b20ce894b0fa7dc98ef3a0b43a5)
   - Groups written in the later part of js/ts will be displayed on top layer.
+
+- call [[ref]](https://vizhub.com/curran/92c34f62c0f948e89e87d28907c08715)
+
+  I have a function `myfunc(selection, props){}`
+
+  And this invoking `myfunc(svg, {})` is the same as `svg.call(myfunc, {})`
+
+- `scaleXXX().domain(myArray)` will automatically remove the duplicates in `myArray`
+[[ref]](https://vizhub.com/curran/d5ad96d1fe8148bd827a25230cc0f083)

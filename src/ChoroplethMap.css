@@ -1,0 +1,17 @@
+#ChoroplethMap {
+  padding-top: 3em;
+}
+
+.sphere {
+  fill: #3bb9b9bd;
+}
+
+.country {
+  /* fill: #b5f16b; */
+  stroke: black;
+  stroke-width: 0.15px;
+}
+
+.country:hover {
+  fill: #e4747e;
+}
