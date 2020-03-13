@@ -48,7 +48,7 @@ export class ChoroplethMap extends Component<{}, {}> {
     const svg = d3
       .select('#ChoroplethMap')
       .selectAll('svg')
-      .data([1])
+      .data([null])
       .join('svg')
         .attr('height', height)
         .attr('width', width);
@@ -63,8 +63,13 @@ export class ChoroplethMap extends Component<{}, {}> {
     colorScale
       .range(d3.schemeSpectral[colorScale.domain().length]);
 
-    // draw map
-    const mapG = svg.append('g');
+    // draw stable part of the map
+    const mapG = svg
+      .selectAll('.map')
+      .data([null])
+      .join('g')
+        .attr('class', 'map');
+
     mapG
       .selectAll('.sphere')
       .data([null])
@@ -72,23 +77,50 @@ export class ChoroplethMap extends Component<{}, {}> {
         .attr('class', 'sphere')
         .attr('d', d => pathGenerator({type: 'Sphere'}));
 
-    mapG
-      .selectAll('.country')
-      .data(this.worldData)
-      .join('path')
-        .attr('class', 'country')
-        .attr('d', (d: any) => pathGenerator(d))
-        .attr('fill', (d: any) => colorScale(d.spec) as string)
-        .append('title')
-          .text((d: any) => `${d.name}: ${d.spec}`); // set hover text
-
     // draw color legend
-    const colorLegendG = svg.append('g')
-      .attr('transform', 'translate(0, 250)');
+    const colorLegendG = svg
+      .selectAll('.colorLegend')
+      .data([null])
+      .join('g')
+        .attr('class', 'colorLegend')
+        .attr('transform', 'translate(0, 250)');
     const selector = colorLegendG;
     const colorRadius = 10;
     const colorDistance = 5;
-    colorLegendVertical({ selector, colorScale, colorRadius, colorDistance, textwidth: 200});
+
+    // add event when click color legend
+    let clickedDomain: any;
+    const onClick = (clicked: string) => {
+      console.log(clicked);
+      clickedDomain = clicked;
+      renderMap();
+    };
+
+    // render dynamic part of map
+    const renderMap = () => {
+      const countries = mapG
+        .selectAll('.country')
+        .data(this.worldData)
+        .join('path')
+          .attr('class', 'country')
+          .attr('d', (d: any) => pathGenerator(d))
+          .attr('fill', (d: any) => colorScale(d.spec) as string)
+          .attr('opacity', (d: any) =>
+            (!clickedDomain || d.spec === clickedDomain)
+            ? 1
+            : 0.2,
+          );
+
+      countries
+        .selectAll('title')
+        .data(d => [d])
+        .join('title')
+          .text((d: any) => `${d.name}: ${d.spec}`); // set hover text
+
+      colorLegendVertical({ selector, colorScale, colorRadius, colorDistance, textwidth: 200, onClick, clickedDomain});
+    };
+
+    renderMap();
   }
 
   render() {

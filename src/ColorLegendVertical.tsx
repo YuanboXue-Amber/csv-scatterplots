@@ -1,14 +1,17 @@
 interface IColorLegendVerticalProps {
   selector: any;
-  colorScale: any; // d3.ScaleOrdinal<string, string>;
+  colorScale: any;
   colorRadius: number;
   colorDistance: number;
   textwidth: number;
+  onClick: any;
+  clickedDomain: string | undefined;
 }
 
 export function colorLegendVertical(props: IColorLegendVerticalProps) {
 
-  const { selector, colorScale, colorRadius, colorDistance, textwidth } = props;
+  const { selector, colorScale, colorRadius, colorDistance, textwidth, onClick, clickedDomain } = props;
+  const colordiam = colorRadius * 2;
 
   const ColorLegendVerticalG = selector
     .selectAll('#ColorLegendVertical')
@@ -18,33 +21,45 @@ export function colorLegendVertical(props: IColorLegendVerticalProps) {
 
   const n = colorScale.domain().length;
   ColorLegendVerticalG
-    .append('rect')
-      .attr('height', (n + 1) * colorRadius * 2 + (n - 1) * colorDistance)
+    .selectAll('rect')
+    .data([null])
+    .join('rect')
+      .attr('height', (n + 1) * colordiam + (n - 1) * colorDistance)
       .attr('width', textwidth)
       .attr('stroke', 'black')
       .attr('stroke-width', '1')
       .attr('x', '1')
       .attr('fill', 'white')
       .attr('opacity', '0.7')
-      .attr('ry', colorRadius * 2);
+      .attr('ry', colordiam);
 
   const labels = ColorLegendVerticalG
     .selectAll('g')
     .data(colorScale.domain())
     .join('g')
       .attr('class', 'ColorLegendVertical-label')
-      .attr('transform', `translate(${colorRadius}, ${colorRadius})`);
-  labels
-    .append('circle')
+      .attr('transform', (d: any, i: number) => `translate(${colordiam}, ${(i + 1) * colordiam + i * colorDistance})`)
+      .attr('cursor', 'pointer')
+      .attr('opacity', (d: any) =>
+          (!clickedDomain || d === clickedDomain)
+          ? 1
+          : 0.2,
+        )
+      .on('click', (d: any) =>
+          onClick(d === clickedDomain ? null : d),
+        );
+
+  labels.selectAll('circle')
+    .data((d: string) => [d])
+    .join('circle')
       .attr('r', colorRadius)
-      .attr('fill', (d: string) => colorScale(d) as string)
-      .attr('cx', colorRadius)
-      .attr('cy', (d: string, i: number) => colorRadius + i * (colorDistance + 2 * colorRadius));
-  labels
-    .append('text')
+      .attr('fill', (d: string) => colorScale(d) as string);
+
+  labels.selectAll('text')
+    .data((d: string) => [d])
+    .join('text')
       .text((d: string) => d)
-      .attr('x', colorRadius * 2.5)
-      .attr('y', (d: string, i: number) => colorRadius + i * (colorDistance + 2 * colorRadius))
+      .attr('dx', colorRadius * 1.5)
       .attr('alignment-baseline', 'middle')
       .attr('font-size', '0.8em')
       .attr('font-family', 'sans-serif');
